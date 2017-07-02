@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>注册</title>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" href="bootstrap3/css/bootstrap.min.css">
+	<!-- 自己的css -->
+	<link rel="stylesheet" type="text/css" href="botcc/css/my.css">
+	<!-- 自己的js -->
+	<script type="text/javascript" src="botcc/js/cookie.js"></script>
+	<script type="text/javascript" src="botcc/js/login_register_validate.js"></script>
+</head>
+
+<body>
+	<!-- 页头 -->
+    <div class="page-header">
+        <h1>BOT-CC Graduation Design
+        <img src="botcc/pictures/logo.jpg" alt="logo" width="50px" height="50px">
+        </h1>
+        <!-- 导航条 -->
+		<ul class="nav nav-pills">
+	        <li role="presentation"><a href="index.html">主页</a></li>
+	        <li role="presentation"><a href="humitemp.html">查看实时温湿度数据</a></li>
+	        <li role="presentation"><a href="#">查看历史温湿度数据</a></li>
+	        <!-- 下拉列表 -->
+	       	<li role="presentation" class="dropdown active">
+			    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+			      	我的帐号 <span class="caret"></span>
+			    </a>
+			    <ul class="dropdown-menu">
+			    	<li><a href="login.html">登录</a></li>
+			    	<li role="separator" class="divider"></li>
+			    	<li><a href="register.html">注册</a>
+			    </ul>
+  			</li>
+	    </ul>
+    </div>
+    <!-- 路径导航条 -->
+		<ol class="breadcrumb">
+			<li><a href="index.html">主页</a></li>
+			<li class="active"><a href="register.html">注册</a></li>
+		</ol>
+     
+	<!-- 注册 -->
+	<div class="container-fluid">
+	<div class="row">
+		<form class="form-horizontal" id="reg_form" action="" method="POST">
+			<div class="form-group">
+				<label class="col-md-5 control-label" for="username">帐号：</label>
+				<div class="col-md-2">
+					<input class="form-control" type="text" name="username" id="username" onblur="checkusername()">
+					<span name="username_help" id="username_help"></span><br>
+				</div>
+			</div>	
+			
+			<div class="form-group">
+				<label class="col-md-5 control-label" for="password">密码：</label>
+				<div class="col-md-2">
+					<input class="form-control" type="password" name="password" id="password" onblur="checkpassword()">
+					<span name="password_help" id="password_help"></span><br>	
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="col-md-5 control-label" for="password2">确认密码：</label>
+				<div class="col-md-2">
+					<input class="form-control" type="password" name="password2" id="password2" onblur="checkpassword2()">
+					<span name="password2_help" id="password2_help"></span><br>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-1 col-md-offset-5">
+					<input class="btn btn-default" type="button" value="注册" onclick="checkregister(this.form)">
+				</div>
+				<div class="col-md-1">
+					<input class="btn btn-default" type="reset" value="重置">	
+				</div>
+			</div>
+		</form>
+		</div>
+	</div>
+	<!-- 页脚 -->
+	<footer id="footer" onload="">
+    <hr>
+        <div class="col-md-2 col-md-offset-5">
+            Crated by 曹礼俊 14111800420
+       </div>
+    </footer>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="bootstrap3/js/bootstrap.min.js"></script>
+</body>
+</html>

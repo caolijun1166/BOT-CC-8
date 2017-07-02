@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>实时温湿度数据</title>
+	<script type="text/javascript">
+		var xmlHttp;
+		function gethumitemp(){
+			//alert("1");	
+			if (window.XMLHttpRequest) {
+				xmlHttp = new XMLHttpRequest();
+			}
+			else{
+				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			//alert("2");
+				xmlHttp.open("GET","Test",true);
+				//alert("3");
+				xmlHttp.onreadystatechange = handle;
+				//alert("4");
+				xmlHttp.send();
+		}
+
+		function handle(){
+			if(xmlHttp.readyState == 4){
+				if(xmlHttp.status == 200){
+					document.getElementById("humiTemp").innerHTML=xmlHttp.responseText;
+				}
+			}
+		}
+	</script>
+</head>
+<body>	
+	<button onclick="gethumitemp();">异步测试开始</button>
+	<script type="text/javascript">
+		var int=setInterval("gethumitemp()",50);
+	</script>
+	<div>
+		<span>当前温湿度：</span>
+		<span id="humiTemp"></span>
+	</div>
+</body>
+</html>
