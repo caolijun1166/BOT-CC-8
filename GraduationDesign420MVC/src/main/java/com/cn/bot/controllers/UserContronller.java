@@ -30,4 +30,21 @@ public class UserContronller {
 			resJson.put(Constant.CONSTANT_STATUS, CodeDict.CODEDICT_SUCCESS);
 		return resJson;
 	}
+	
+	@RequestMapping(value="regist", method=RequestMethod.POST)
+	@ResponseBody
+	public JSONObject regist(@RequestParam("mobile")String mobile, @RequestParam("username")String username, @RequestParam("password")String password,@RequestParam("authority")String authority){
+		
+		JSONObject resJson = new JSONObject();
+		boolean isSuccess = userService.insertUser(mobile, username, password, authority);
+		if(isSuccess == true){
+			resJson.put(Constant.CONSTANT_STATUS, CodeDict.CODEDICT_SUCCESS);
+			return resJson;
+		}
+		else{
+			resJson.put(Constant.CONSTANT_STATUS, CodeDict.CODEDICT_ERROR);
+			return resJson;
+		}
+		
+	}
 }

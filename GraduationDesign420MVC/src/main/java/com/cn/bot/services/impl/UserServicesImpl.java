@@ -12,7 +12,20 @@ import com.cn.bot.services.UserService;
 public class UserServicesImpl implements UserService {
 	@Resource
 	private UserDAO userDAO;
+	
+	@Override
 	public User queryUserByLoginInfo(String username, String password){
 		return userDAO.queryUserByLoginInfo(username, password);
 	}
+	
+	@Override
+	public boolean insertUser(String mobile, String username, String password, String authority) {
+		int result = userDAO.insertUser(mobile, username, password, authority);
+		if(result == 0)
+			return false;
+		else
+			return true;
+	}
+	
+	
 }

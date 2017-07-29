@@ -48,7 +48,16 @@
 	<!-- 注册 -->
 	<div class="container-fluid">
 	<div class="row">
-		<form class="form-horizontal" id="reg_form" action="" method="POST">
+		<form class="form-horizontal" id="reg_form" action="user/regist" method="POST">
+
+			<div class="form-group">
+				<label class="col-md-5 control-label" for="mobile">手机：</label>
+				<div class="col-md-2">
+					<input class="form-control" type="text" name="mobile" id="mobile" onblur="checkusername()">
+					<span name="" id=""></span><br>
+				</div>
+			</div>
+
 			<div class="form-group">
 				<label class="col-md-5 control-label" for="username">帐号：</label>
 				<div class="col-md-2">
@@ -72,6 +81,14 @@
 					<span name="password2_help" id="password2_help"></span><br>
 				</div>
 			</div>
+
+			<div align="center">
+				<input type="radio" name="authority" id="admin" value="0">管理员
+				<input type="radio" name="authority" id="user" value="1">普通用户
+			</div>
+
+			<br>
+
 			<div class="form-group">
 				<div class="col-md-1 col-md-offset-5">
 					<input class="btn btn-default" type="button" value="注册" onclick="checkregister(this.form)">
