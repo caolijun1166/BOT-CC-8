@@ -4,11 +4,15 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import com.cn.bot.threadTasks.SensorReceiverTask;
+import org.apache.log4j.Logger;
+
+import com.cn.bot.threadTasks.SensorDataReceiverTask;
 
 @WebListener
 public class SensorHandler implements ServletContextListener {
-
+	
+	private Logger log = Logger.getLogger(SensorHandler.class);
+	
 	@Override
 	public void contextDestroyed(ServletContextEvent contextEvent) {
 		// TODO Auto-generated method stub
@@ -18,12 +22,12 @@ public class SensorHandler implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent contextEvent) {
 		//创建线程任务对象
-		SensorReceiverTask sensorReceiverTask = new SensorReceiverTask(contextEvent.getServletContext());
+		SensorDataReceiverTask sensorDataReceiverTask = new SensorDataReceiverTask(contextEvent.getServletContext());
 		//创建线程对象，并将任务放入
-		Thread sensorReceiverThread = new Thread(sensorReceiverTask);
+		Thread sensorDataReceiverThread = new Thread(sensorDataReceiverTask);
 		//启动线程
-		sensorReceiverThread.start();
-		System.out.println("-------------------------------------------------------Start-------------------------------------------------------");
+		sensorDataReceiverThread.start();
+		log.debug("-------------------------------SensorDataReceiverThread has Started in SensorHandler-------------------------------");
 	}
 
 }

@@ -29,8 +29,8 @@
 		function handle(){
 			if(xmlHttp.readyState == 4){
 				if(xmlHttp.status == 200){
-					document.getElementById("temp").innerHTML=xmlHttp.responseText.split(";")[0]+"℃";
-					document.getElementById("humi").innerHTML=xmlHttp.responseText.split(";")[1]+"%";
+					document.getElementById("temp").innerHTML=xmlHttp.responseText.split(";")[0].split("\"")[1]+"℃";
+					document.getElementById("humi").innerHTML=xmlHttp.responseText.split(";")[1].split("\"")[0]+"%";
 				}
 			}
 		}
