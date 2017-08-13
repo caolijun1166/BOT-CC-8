@@ -15,6 +15,17 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<!--设置log4j的配置文件位置-->
+	<context-param>
+	    <param-name>log4jConfigLocation</param-name>
+	    <param-value>classpath:log4j.properties</param-value>
+	</context-param>
+	
+	<!--使用监听加载log4j的配置文件-->
+	<listener>
+	    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
     
   <!-- Spring集成Web环境的通用配置，一般用于加载除Web层的Bean(如Dao、Service等)，
                        以便于与其他任何Web框架集成 -->  
@@ -46,7 +57,7 @@
     <!-- 防止Spring内存溢出监听器 -->  
     <listener>  
         <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>  
-    </listener>  
+    </listener>
   
     <!-- Spring MVC Dispatcherservlet -->
     

@@ -1,16 +1,16 @@
 package com.cn.bot.dtos;
 
 public class User {
-	private String tel;
+	private String mobile;
 	private String username;
 	private String password;
 	private String authority;//登录身份。0：管理员，1：用户
 	
-	public String getTel() {
-		return tel;
+	public String getMobile() {
+		return mobile;
 	}
-	public void setTel(String tel) {
-		this.tel = tel;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 	public String getUsername() {
 		return username;
