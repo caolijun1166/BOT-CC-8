@@ -11,6 +11,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.log4j.Logger;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cn.bot.util.MemcacheHelper;
 import com.cn.bot.util.TimeHelper;
 
@@ -20,6 +21,8 @@ public class SensorDataReceiverTask implements Runnable{
 	private BufferedReader reader;
 	private ServletContext context;//创建ServletContext对象，将数据设入其中
 	private Logger log = Logger.getLogger(SensorDataReceiverTask.class);
+	private JSONObject obj;
+	private int dataAmount = 0;
 	public SensorDataReceiverTask(ServletContext context){
 		this.context = context;
 		//创建指定服务端口
@@ -38,7 +41,8 @@ public class SensorDataReceiverTask implements Runnable{
 		while(true){
 			//监听端口
 			try{
-				socket = server.accept();//执行到此处阻塞当前线程
+				obj = new JSONObject();
+				socket = server.accept();//执行到此处阻塞当前线程，等待传感器连接
 				//读取数据
 				while(true){
 					reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -50,16 +54,32 @@ public class SensorDataReceiverTask implements Runnable{
 					context.setAttribute("humiTemp", data);
 					log.debug("-------------------------------上下文属性设置成功！-------------------------------");
 					
-					//将数据缓存至Memcache中
-					MemcacheHelper mcc = MemcacheHelper.getInstance();
+					//获取当前时间，作为JSONObject的key
 					String key = TimeHelper.getCurrentTime(false);
 					log.debug("-------------------------------dateKey is: " + key + "-------------------------------");
+					//将传感器数据封装至JSONObject中
+					obj.put(key, data);
+					dataAmount++;
 					
-					boolean isSuccess = mcc.add(key, data, TimeHelper.setExpire(1));
-					if(isSuccess)
-						log.debug("-------------------------------Mcc Add Success !-------------------------------\r");
-					else
-						log.debug("-------------------------------Mcc Add Fail !-------------------------------\r");
+					//当JSONObject中封装了10个数据后，写入Mecmcahce中
+					if(dataAmount == 10){
+						log.debug("-------------------------------Enter Mcc Operation !-------------------------------\r");
+						MemcacheHelper mcc = MemcacheHelper.getInstance();
+						boolean isSuccess = mcc.set("SensorData", obj, TimeHelper.setExpire(1));
+						if(isSuccess){
+							log.debug("-------------------------------Mcc Add Success !-------------------------------\r");
+							JSONObject dataMapResult = JSONObject.parseObject((String)mcc.get("SensorData"));
+							for(String sensorDataKey: dataMapResult.keySet()){
+								String singleSensorData = dataMapResult.getString(sensorDataKey);
+								log.debug("-------------------------------Sensor Data in" + sensorDataKey + "is: " + singleSensorData + "-------------------------------\r");
+							}
+						}
+						else
+							log.debug("-------------------------------Mcc Add Fail !-------------------------------\r");
+						dataAmount = 0;
+					}else
+						log.debug("-------------------------------Current Data Amount is:" + dataAmount +" -------------------------------\r");
+					//如有异常则跳出该循环
 				}
 			}catch(SocketTimeoutException e){
 				e.printStackTrace();
@@ -76,6 +96,7 @@ public class SensorDataReceiverTask implements Runnable{
 				}catch(Exception e1){
 					e1.printStackTrace();
 				}
+				//到此catch SocketTimeoutException语句块执行完毕，如没有别的异常，则返回至最外层循环，再次等待传感器连接
 			}
 			catch(Exception e){
 				e.printStackTrace();
