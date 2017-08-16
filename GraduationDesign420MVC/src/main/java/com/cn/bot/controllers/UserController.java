@@ -1,6 +1,7 @@
 package com.cn.bot.controllers;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +21,17 @@ public class UserController {
 	@Resource
 	private UserService userService;
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-	@ResponseBody
-	public JSONObject login(@RequestParam("username")String username,@RequestParam("password")String password){
+	public String login(@RequestParam("username")String username,@RequestParam("password")String password,HttpSession session){
 		JSONObject resJson = new JSONObject();
 		User userExist = userService.queryUserByLoginInfo(username, password);
 		if(userExist == null)
 			resJson.put(Constant.CONSTANT_STATUS, CodeDict.CODEDICT_ERROR);
-		else
+		else{
 			resJson.put(Constant.CONSTANT_STATUS, CodeDict.CODEDICT_SUCCESS);
-		return resJson;
+			session.setAttribute("isLogin", "true");
+			session.setMaxInactiveInterval(120);
+		}
+		return "loginSuccess";
 	}
 	
 	@RequestMapping(value="regist", method=RequestMethod.POST)
