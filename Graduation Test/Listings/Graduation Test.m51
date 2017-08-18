@@ -1,0 +1,398 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        08/13/2017  20:34:51  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+D:\DEVELOPMENTTOOLS\KEIL 5\C51\BIN\BL51.EXE .\Objects\main.obj TO .\Objects\Graduation Test PRINT (.\Listings\Graduation
+>>  Test.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\main.obj (MAIN)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (?C_STARTUP)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (?C?CLDOPTR)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (PRINTF)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (?C_INIT)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (?C?CLDPTR)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (?C?CSTPTR)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (?C?PLDIIDATA)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (?C?CCASE)
+  D:\DEVELOPMENTTOOLS\KEIL 5\C51\LIB\C51S.LIB (PUTCHAR)
+
+
+LINK MAP OF MODULE:  .\Objects\Graduation Test (MAIN)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0018H     UNIT         _DATA_GROUP_
+            BIT     0020H.0   0001H.1   UNIT         _BIT_GROUP_
+                    0021H.1   0000H.7                *** GAP ***
+            DATA    0022H     0016H     UNIT         ?DT?MAIN
+            IDATA   0038H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     035CH     UNIT         ?PR?PRINTF?PRINTF
+            CODE    0B5CH     00B1H     UNIT         ?CO?MAIN
+            CODE    0C0DH     008EH     UNIT         ?C?LIB_CODE
+            CODE    0C9BH     008CH     UNIT         ?C_C51STARTUP
+            CODE    0D27H     0074H     UNIT         ?PR?INITESP8266?MAIN
+            CODE    0D9BH     0066H     UNIT         ?PR?RH?MAIN
+            CODE    0E01H     0051H     UNIT         ?PR?_ESP8266SEND?MAIN
+            CODE    0E52H     0049H     UNIT         ?PR?COM?MAIN
+            CODE    0E9BH     0027H     UNIT         ?PR?PUTCHAR?PUTCHAR
+            CODE    0EC2H     001EH     UNIT         ?PR?_DELAY?MAIN
+            CODE    0EE0H     001EH     UNIT         ?PR?_DELAY_MS?MAIN
+            CODE    0EFEH     001BH     UNIT         ?PR?MAIN?MAIN
+            CODE    0F19H     0019H     UNIT         ?PR?INITUART?MAIN
+            CODE    0F32H     000FH     UNIT         ?PR?DELAY18MS?MAIN
+            CODE    0F41H     000BH     UNIT         ?C_INITSEG
+            CODE    0F4CH     0008H     UNIT         ?PR?DELAY_10US?MAIN
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\Graduation Test (MAIN)
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/13/2017  20:34:51  PAGE 2
+
+
+
+
+SEGMENT                           BIT_GROUP          DATA_GROUP 
+  +--> CALLED SEGMENT          START    LENGTH     START    LENGTH
+------------------------------------------------------------------
+?C_C51STARTUP                  -----    -----      -----    -----
+  +--> ?PR?MAIN?MAIN
+  +--> ?C_INITSEG
+
+?PR?MAIN?MAIN                  -----    -----      -----    -----
+  +--> ?PR?INITUART?MAIN
+  +--> ?PR?INITESP8266?MAIN
+  +--> ?PR?RH?MAIN
+  +--> ?PR?_ESP8266SEND?MAIN
+  +--> ?PR?_DELAY?MAIN
+
+?PR?INITESP8266?MAIN           -----    -----      -----    -----
+  +--> ?PR?_DELAY_MS?MAIN
+  +--> ?CO?MAIN
+  +--> ?PR?PRINTF?PRINTF
+
+?PR?PRINTF?PRINTF              0020H.0  0001H.1    000CH    0014H
+  +--> ?PR?PUTCHAR?PUTCHAR
+
+?PR?RH?MAIN                    -----    -----      -----    -----
+  +--> ?PR?DELAY18MS?MAIN
+  +--> ?PR?DELAY_10US?MAIN
+  +--> ?PR?COM?MAIN
+
+?PR?COM?MAIN                   -----    -----      0008H    0001H
+  +--> ?PR?DELAY_10US?MAIN
+
+?PR?_ESP8266SEND?MAIN          -----    -----      0008H    0004H
+  +--> ?CO?MAIN
+  +--> ?PR?PRINTF?PRINTF
+  +--> ?PR?_DELAY_MS?MAIN
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Graduation Test (MAIN)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C8H         PUBLIC        P5
+  D:0022H         PUBLIC        U8T_data_H
+  D:0023H         PUBLIC        U8T_data_L
+  D:00A8H         PUBLIC        IE
+  C:0EC2H         PUBLIC        _delay
+  B:00A8H.4       PUBLIC        ES
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/13/2017  20:34:51  PAGE 3
+
+
+  D:00B8H         PUBLIC        IP
+  C:0D9BH         PUBLIC        RH
+  C:0F4CH         PUBLIC        Delay_10us
+  B:0098H.1       PUBLIC        TI
+  D:0024H         PUBLIC        U8T_data_H_temp
+  D:0025H         PUBLIC        temph
+  D:002DH         PUBLIC        U8T_data_L_temp
+  B:00A0H.1       PUBLIC        dht11
+  D:00D8H         PUBLIC        CCON
+  C:0EFEH         PUBLIC        main
+  D:002EH         PUBLIC        U8FLAG
+  D:002FH         PUBLIC        U8checkdata
+  D:0087H         PUBLIC        PCON
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  C:0F32H         PUBLIC        Delay18ms
+  D:008EH         PUBLIC        AUXR
+  D:0030H         PUBLIC        U8checkdata_temp
+  D:0031H         PUBLIC        U8temp
+  D:0032H         PUBLIC        U8RH_data_H
+  D:0033H         PUBLIC        U8RH_data_L
+  C:0EE4H         PUBLIC        _delay_ms
+  C:0F19H         PUBLIC        InitUART
+  C:0D27H         PUBLIC        InitESP8266
+  B:0088H.6       PUBLIC        TR1
+  C:0E52H         PUBLIC        COM
+  D:0034H         PUBLIC        U8RH_data_H_temp
+  D:009CH         PUBLIC        BRT
+  D:0035H         PUBLIC        U8RH_data_L_temp
+  D:0036H         PUBLIC        k
+  D:0037H         PUBLIC        U8comdata
+  C:0E01H         PUBLIC        _ESP8266SEND
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:0EFEH         LINE#         34
+  C:0EFEH         LINE#         35
+  C:0EFEH         LINE#         36
+  C:0F01H         LINE#         37
+  C:0F04H         LINE#         38
+  C:0F04H         LINE#         39
+  C:0F04H         LINE#         40
+  C:0F07H         LINE#         41
+  C:0F10H         LINE#         42
+  C:0F17H         LINE#         43
+  -------         ENDPROC       MAIN
+  -------         PROC          INITUART
+  C:0F19H         LINE#         48
+  C:0F19H         LINE#         49
+  C:0F19H         LINE#         50
+  C:0F1CH         LINE#         51
+  C:0F1FH         LINE#         52
+  C:0F22H         LINE#         53
+  C:0F25H         LINE#         54
+  C:0F28H         LINE#         55
+  C:0F2BH         LINE#         56
+  C:0F2DH         LINE#         57
+  C:0F2FH         LINE#         58
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/13/2017  20:34:51  PAGE 4
+
+
+  C:0F31H         LINE#         59
+  -------         ENDPROC       INITUART
+  -------         PROC          INITESP8266
+  C:0D27H         LINE#         61
+  C:0D27H         LINE#         62
+  C:0D2EH         LINE#         64
+  C:0D37H         LINE#         65
+  C:0D3AH         LINE#         67
+  C:0D43H         LINE#         68
+  C:0D46H         LINE#         70
+  C:0D4FH         LINE#         71
+  C:0D52H         LINE#         73
+  C:0D5BH         LINE#         74
+  C:0D5EH         LINE#         76
+  C:0D67H         LINE#         77
+  C:0D6AH         LINE#         79
+  C:0D73H         LINE#         80
+  C:0D76H         LINE#         82
+  C:0D7FH         LINE#         83
+  C:0D82H         LINE#         85
+  C:0D8BH         LINE#         86
+  C:0D92H         LINE#         88
+  -------         ENDPROC       INITESP8266
+  -------         PROC          _ESP8266SEND
+  D:0008H         SYMBOL        a
+  -------         DO            
+  D:000BH         SYMBOL        i
+  -------         ENDDO         
+  C:0E01H         LINE#         91
+  C:0E07H         LINE#         92
+  C:0E07H         LINE#         95
+  C:0E10H         LINE#         96
+  C:0E13H         LINE#         98
+  C:0E16H         LINE#         99
+  C:0E30H         LINE#         100
+  C:0E39H         LINE#         101
+  C:0E42H         LINE#         102
+  C:0E49H         LINE#         104
+  -------         ENDPROC       _ESP8266SEND
+  -------         PROC          COM
+  -------         DO            
+  D:0008H         SYMBOL        i
+  -------         ENDDO         
+  C:0E52H         LINE#         109
+  C:0E52H         LINE#         110
+  C:0E52H         LINE#         112
+  C:0E55H         LINE#         113
+  C:0E55H         LINE#         114
+  C:0E58H         LINE#         115
+  C:0E62H         LINE#         116
+  C:0E65H         LINE#         117
+  C:0E68H         LINE#         118
+  C:0E6BH         LINE#         119
+  C:0E6EH         LINE#         120
+  C:0E74H         LINE#         121
+  C:0E77H         LINE#         122
+  C:0E81H         LINE#         124
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/13/2017  20:34:51  PAGE 5
+
+
+  C:0E87H         LINE#         129
+  C:0E8DH         LINE#         130
+  C:0E91H         LINE#         131
+  C:0E9AH         LINE#         132
+  -------         ENDPROC       COM
+  -------         PROC          RH
+  C:0D9BH         LINE#         145
+  C:0D9BH         LINE#         146
+  C:0D9BH         LINE#         148
+  C:0D9DH         LINE#         149
+  C:0DA0H         LINE#         150
+  C:0DA2H         LINE#         152
+  C:0DA5H         LINE#         153
+  C:0DA8H         LINE#         155
+  C:0DAAH         LINE#         157
+  C:0DADH         LINE#         158
+  C:0DADH         LINE#         159
+  C:0DB0H         LINE#         161
+  C:0DBAH         LINE#         162
+  C:0DBDH         LINE#         164
+  C:0DC7H         LINE#         166
+  C:0DCAH         LINE#         167
+  C:0DCDH         LINE#         168
+  C:0DD0H         LINE#         169
+  C:0DD3H         LINE#         170
+  C:0DD6H         LINE#         171
+  C:0DD9H         LINE#         172
+  C:0DDCH         LINE#         173
+  C:0DDFH         LINE#         174
+  C:0DE2H         LINE#         175
+  C:0DE5H         LINE#         176
+  C:0DE7H         LINE#         178
+  C:0DF1H         LINE#         179
+  C:0DF4H         LINE#         180
+  C:0DF4H         LINE#         181
+  C:0DF7H         LINE#         182
+  C:0DFAH         LINE#         183
+  C:0DFDH         LINE#         184
+  C:0E00H         LINE#         185
+  C:0E00H         LINE#         186
+  C:0E00H         LINE#         187
+  -------         ENDPROC       RH
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        a
+  -------         DO            
+  D:0004H         SYMBOL        i
+  -------         ENDDO         
+  C:0EC2H         LINE#         190
+  C:0EC2H         LINE#         191
+  C:0EC2H         LINE#         193
+  C:0ECBH         LINE#         194
+  C:0EDFH         LINE#         195
+  -------         ENDPROC       _DELAY
+  -------         PROC          DELAY_10US
+  -------         DO            
+  D:0007H         SYMBOL        i
+  -------         ENDDO         
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/13/2017  20:34:51  PAGE 6
+
+
+  C:0F4CH         LINE#         197
+  C:0F4CH         LINE#         198
+  C:0F4CH         LINE#         201
+  C:0F4DH         LINE#         202
+  C:0F4EH         LINE#         203
+  C:0F4FH         LINE#         204
+  C:0F51H         LINE#         205
+  C:0F53H         LINE#         206
+  -------         ENDPROC       DELAY_10US
+  -------         PROC          DELAY18MS
+  -------         DO            
+  D:0007H         SYMBOL        i
+  D:0006H         SYMBOL        j
+  D:0005H         SYMBOL        k
+  -------         ENDDO         
+  C:0F32H         LINE#         208
+  C:0F32H         LINE#         209
+  C:0F32H         LINE#         212
+  C:0F33H         LINE#         213
+  C:0F34H         LINE#         214
+  C:0F36H         LINE#         215
+  C:0F38H         LINE#         216
+  C:0F3AH         LINE#         218
+  C:0F3AH         LINE#         220
+  C:0F3AH         LINE#         221
+  C:0F3CH         LINE#         222
+  C:0F3EH         LINE#         223
+  C:0F40H         LINE#         224
+  -------         ENDPROC       DELAY18MS
+  C:0EE0H         SYMBOL        L?0058
+  -------         PROC          L?0057
+  -------         ENDPROC       L?0057
+  C:0EE0H         SYMBOL        L?0058
+  -------         PROC          _DELAY_MS
+  D:0006H         SYMBOL        t
+  -------         DO            
+  D:0004H         SYMBOL        a
+  D:0005H         SYMBOL        b
+  -------         ENDDO         
+  C:0EE4H         LINE#         226
+  C:0EE4H         LINE#         227
+  C:0EE4H         LINE#         229
+  C:0EEEH         LINE#         230
+  C:0EEEH         LINE#         231
+  C:0EF6H         LINE#         232
+  C:0EFDH         LINE#         233
+  C:0EFDH         LINE#         234
+  -------         ENDPROC       _DELAY_MS
+  -------         ENDMOD        MAIN
+
+  -------         MODULE        ?C?CLDOPTR
+  C:0C0DH         PUBLIC        ?C?CLDOPTR
+  -------         ENDMOD        ?C?CLDOPTR
+
+  -------         MODULE        PRINTF
+  D:000CH         PUBLIC        ?_PRINTF517?BYTE
+  D:000CH         PUBLIC        ?_PRINTF?BYTE
+BL51 BANKED LINKER/LOCATER V6.22                                                      08/13/2017  20:34:51  PAGE 7
+
+
+  D:000CH         PUBLIC        ?_SPRINTF517?BYTE
+  D:000CH         PUBLIC        ?_SPRINTF?BYTE
+  C:0862H         PUBLIC        _PRINTF
+  C:0862H         PUBLIC        _PRINTF517
+  C:085CH         PUBLIC        _SPRINTF
+  C:085CH         PUBLIC        _SPRINTF517
+  -------         ENDMOD        PRINTF
+
+  -------         MODULE        ?C?CLDPTR
+  C:0C3AH         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
+
+  -------         MODULE        ?C?CSTPTR
+  C:0C53H         PUBLIC        ?C?CSTPTR
+  -------         ENDMOD        ?C?CSTPTR
+
+  -------         MODULE        ?C?PLDIIDATA
+  C:0C65H         PUBLIC        ?C?PLDIIDATA
+  -------         ENDMOD        ?C?PLDIIDATA
+
+  -------         MODULE        ?C?CCASE
+  C:0C75H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+  -------         MODULE        PUTCHAR
+  C:0E9BH         PUBLIC        _PUTCHAR
+  -------         ENDMOD        PUTCHAR
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 02B6H BYTE (33%) *
+******************************************************************************
+
+Program Size: data=56.1 xdata=0 code=1879
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,269 @@
+C51 COMPILER V9.56.0.0   MAIN                                                              08/13/2017 20:34:51 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\DevelopmentTools\Keil 5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
+                    -(.\Listings\main.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          //****************************************BOT-CC Graduation Desgin****************************************
+             -*******//
+   2          
+   3          //*******************************************曹礼俊 14111800420*******************************************
+             -*******//
+   4          #include <stc12.h>
+   5          #include <stdio.h>
+   6          #include <intrins.h>
+   7          //**********************************声明区**********************************//
+   8          typedef unsigned char  U8;       /* defined for unsigned 8-bits integer variable    无符号8位整型变量  */
+   9          #define uchar unsigned char
+  10          #define uint unsigned int
+  11          #define param 500
+  12          //------------------------------------------------------------------------------
+  13          void InitUART(void);//串口初始化函数
+  14          void InitESP8266(void);//ESP8266初始化函数
+  15          void ESP8266SEND(char *a);//ESP8266发送函数
+  16          void delay(unsigned int a);
+  17          void delay_ms(unsigned int t);
+  18          void send(char *a,char num);
+  19          void Delay_10us();
+  20          void Delay18ms();
+  21          void RH();
+  22          void COM();
+  23          //------------------------------------------------------------------------------
+  24          sbit  dht11  = P2^1;
+  25          U8  U8FLAG,k;
+  26          U8  U8comdata;
+  27          U8  U8temp;
+  28          U8  U8T_data_H,U8T_data_L,U8RH_data_H,U8RH_data_L,U8checkdata;
+  29          U8  U8T_data_H_temp,U8T_data_L_temp,U8RH_data_H_temp,U8RH_data_L_temp,U8checkdata_temp;
+  30          unsigned char temph[8]={0xee,0xcc,0x02,0x00,0x00,0x00,0x00,0xff};
+  31          //**************************************************************************//
+  32          
+  33          //**********************************主函数**********************************//
+  34          void main()
+  35          {
+  36   1        InitUART();   //串口初始化
+  37   1        InitESP8266();//ESP8266初始化函数
+  38   1        while(1)
+  39   1        {
+  40   2          RH(); 
+  41   2          ESP8266SEND(temph);
+  42   2          delay(2000); //延时约10s
+  43   2        }
+  44   1      }
+  45          
+  46          
+  47          //**********************************串口初始化函数**********************************//
+  48          void InitUART(void)//串口初始化函数
+  49          {  
+  50   1         PCON &= 0x7f;  //波特率不倍速
+  51   1         SCON = 0x50;  //8位数据,可变波特率
+  52   1         BRT = 0xFD;      //设定独立波特率发生器重装值
+C51 COMPILER V9.56.0.0   MAIN                                                              08/13/2017 20:34:51 PAGE 2   
+
+  53   1         AUXR |= 0x04;  //独立波特率发生器时钟为Fosc,即1T
+  54   1         AUXR |= 0x01;  //串口1选择独立波特率发生器为波特率发生器
+  55   1         AUXR |= 0x10;  //启动独立波特率发生器
+  56   1         ES = 1;        //打开串口中断
+  57   1         TR1 = 1;       //启动定时器
+  58   1         TI = 1;        //打开定时器中断
+  59   1      }
+  60          //**********************************ESP8266初始化函数**********************************//
+  61          void InitESP8266(void){
+  62   1        delay_ms(50000);
+  63   1        //将WIFI模块设置为STA模式
+  64   1        printf("AT+CWMODE=1\r\n");
+  65   1        delay_ms(param);
+  66   1        //将WIFI模块设置为单链接模式
+  67   1        printf("AT+CIPMUX=0\r\n");
+  68   1        delay_ms(param);
+  69   1        //查看STA模式是否设置成功（调试用）
+  70   1        printf("AT+CWMODE?\r\n");
+  71   1        delay_ms(param);
+  72   1        //查看单链接模式是否设置成功（调试用）
+  73   1        printf("AT+CIPMUX?\r\n");
+  74   1        delay_ms(param);
+  75   1        //将WIFI模块设置为透传模式
+  76   1        printf("AT+CIPMODE=1\r\n");
+  77   1        delay_ms(param);
+  78   1        //查看透传模式是否设置成功（调试用）
+  79   1        printf("AT+CIPMODE?\r\n");
+  80   1        delay_ms(param);
+  81   1        //返回当前选择的AP的信息
+  82   1        printf("AT+CWJAP?\r\n");
+  83   1        delay_ms(param);
+  84   1        //连接服务器
+  85   1        printf("AT+CIPSTART=\"TCP\",\"192.168.155.1\",8888\r\n");
+  86   1        delay_ms(15000);
+  87   1        //查看与服务器的连接状态（调试用）
+  88   1        printf("AT+CIPSTATUS\r\n");
+  89   1      }
+  90          //**********************************ESP8266发送函数**********************************//
+  91          void ESP8266SEND(char *a)
+  92          {
+  93   1        unsigned char i;
+  94   1        //将WIFI模块设置为CIPCEND模式，用来发送数据
+  95   1        printf("AT+CIPSEND\r\n");
+  96   1        delay_ms(param);
+  97   1        //发送数据
+  98   1        for(i=0;i<8;i++){
+  99   2          printf("%04X ",a[i]);
+ 100   2        }
+ 101   1        printf("\r\n");
+ 102   1        delay_ms(1000);
+ 103   1        //退出CIPSEND模式
+ 104   1        printf("+++");
+ 105   1        //重启模块，验证CIPSEND模式是否退出成功（调试用）
+ 106   1        //printf("AT+RST\r\n");
+ 107   1      }
+ 108          //**********************************温湿度初始化函数**********************************//
+ 109          void COM(void)
+ 110          {
+ 111   1           U8 i;
+ 112   1           for(i=0;i<8;i++)    
+ 113   1           {
+ 114   2             U8FLAG=2;  
+C51 COMPILER V9.56.0.0   MAIN                                                              08/13/2017 20:34:51 PAGE 3   
+
+ 115   2             while((!dht11)&&U8FLAG++);
+ 116   2               Delay_10us();
+ 117   2               Delay_10us();
+ 118   2               Delay_10us();
+ 119   2             U8temp=0;
+ 120   2              if(dht11)U8temp=1;
+ 121   2              U8FLAG=2;
+ 122   2           while((dht11)&&U8FLAG++);
+ 123   2            //超时则跳出for循环     
+ 124   2             if(U8FLAG==1)break;
+ 125   2            //判断数据位是0还是1   
+ 126   2             
+ 127   2          // 如果高电平高过预定0高电平值则数据位为 1 
+ 128   2             
+ 129   2             U8comdata<<=1;
+ 130   2               U8comdata|=U8temp;        //0
+ 131   2             }//rof    
+ 132   1      }
+ 133          
+ 134          //**********************************温湿度读取子程序**********************************//
+ 135            //--------------------------------
+ 136            //----以下变量均为全局变量--------
+ 137            //----温度高8位== U8T_data_H------
+ 138            //----温度低8位== U8T_data_L------
+ 139            //----湿度高8位== U8RH_data_H-----
+ 140            //----湿度低8位== U8RH_data_L-----
+ 141            //----校验 8位 == U8checkdata-----
+ 142            //----调用相关子程序如下----------
+ 143            //---- Delay();, Delay_10us();,COM(); 
+ 144          //***********************************************************************************//
+ 145            void RH(void)
+ 146            {
+ 147   1          //主机拉低18ms 
+ 148   1             dht11=0;
+ 149   1           Delay18ms();
+ 150   1           dht11=1;
+ 151   1         //总线由上拉电阻拉高 主机延时20us
+ 152   1           Delay_10us();
+ 153   1           Delay_10us();
+ 154   1         //主机设为输入 判断从机响应信号 
+ 155   1           dht11=1;
+ 156   1         //判断从机是否有低电平响应信号 如不响应则跳出，响应则向下运行    
+ 157   1           if(!dht11)    //T !    
+ 158   1           {
+ 159   2           U8FLAG=2;
+ 160   2         //判断从机是否发出 80us 的低电平响应信号是否结束  
+ 161   2           while((!dht11)&&U8FLAG++);
+ 162   2           U8FLAG=2;
+ 163   2         //判断从机是否发出 80us 的高电平，如发出则进入数据接收状态
+ 164   2           while((dht11)&&U8FLAG++);
+ 165   2         //数据接收状态    
+ 166   2           COM();
+ 167   2           U8RH_data_H_temp=U8comdata;
+ 168   2           COM();
+ 169   2           U8RH_data_L_temp=U8comdata;
+ 170   2           COM();
+ 171   2           U8T_data_H_temp=U8comdata;
+ 172   2           COM();
+ 173   2           U8T_data_L_temp=U8comdata;
+ 174   2           COM();
+ 175   2           U8checkdata_temp=U8comdata;
+ 176   2           dht11=1;
+C51 COMPILER V9.56.0.0   MAIN                                                              08/13/2017 20:34:51 PAGE 4   
+
+ 177   2         //数据校验
+ 178   2           U8temp=(U8T_data_H_temp+U8T_data_L_temp+U8RH_data_H_temp+U8RH_data_L_temp);
+ 179   2           if(U8temp==U8checkdata_temp)
+ 180   2           {
+ 181   3            temph[3]=U8RH_data_H_temp;
+ 182   3            temph[4]=U8RH_data_L_temp;
+ 183   3            temph[5]=U8T_data_H_temp;
+ 184   3            temph[6]=U8T_data_L_temp;
+ 185   3           }
+ 186   2           }
+ 187   1        }
+ 188          
+ 189          //**********************************延时函数系列**********************************//
+ 190          void delay(unsigned int a) //延时约1ms
+ 191          {
+ 192   1        unsigned int i;
+ 193   1        while (--a!=0)
+ 194   1        for(i=600;i>0;i--);   //1T单片机i=600，若是12T单片机i=125
+ 195   1      }
+ 196          //------------------------------------------------------------------------------
+ 197          void Delay_10us()   //@11.0592MHz
+ 198          {
+ 199   1        unsigned char i;
+ 200   1      
+ 201   1        _nop_();
+ 202   1        _nop_();
+ 203   1        _nop_();
+ 204   1        i = 24;
+ 205   1        while (--i);
+ 206   1      }
+ 207          
+ 208          void Delay18ms()    //@11.0592MHz
+ 209          {
+ 210   1        unsigned char i, j, k;
+ 211   1      
+ 212   1        _nop_();
+ 213   1        _nop_();
+ 214   1        i = 1;
+ 215   1        j = 194;
+ 216   1        k = 159;
+ 217   1        do
+ 218   1        {
+ 219   2          do
+ 220   2          {
+ 221   3            while (--k);
+ 222   3          } while (--j);
+ 223   2        } while (--i);
+ 224   1      }
+ 225          //------------------------------------------------------------------------------
+ 226          void delay_ms(unsigned int t)  
+ 227          {  
+ 228   1          unsigned char a,b;  
+ 229   1          while(t--)  
+ 230   1          {  
+ 231   2            for(b=102;b>0;b--)  
+ 232   2            for(a=3;a>0;a--);  
+ 233   2          }  
+ 234   1      }
+ 235          //********************************************************************************//
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.56.0.0   MAIN                                                              08/13/2017 20:34:51 PAGE 5   
+
+   CODE SIZE        =    507    ----
+   CONSTANT SIZE    =    177    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     22       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
