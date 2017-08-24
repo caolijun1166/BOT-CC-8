@@ -3,7 +3,7 @@
 //*******************************************曹礼俊 14111800420**************************************************//
 #include <stc12.h>
 #include <stdio.h>
-#include <intrins.h>
+#include "delay.h"
 //**********************************声明区**********************************//
 typedef unsigned char  U8;       /* defined for unsigned 8-bits integer variable 	  无符号8位整型变量  */
 #define uchar unsigned char
@@ -13,21 +13,24 @@ typedef unsigned char  U8;       /* defined for unsigned 8-bits integer variable
 void InitUART(void);//串口初始化函数
 void InitESP8266(void);//ESP8266初始化函数
 void ESP8266SEND(char *a);//ESP8266发送函数
-void delay(unsigned int a);
-void delay_ms(unsigned int t);
 void send(char *a,char num);
-void Delay_10us();
-void Delay18ms();
 void RH();
 void COM();
+//void Delay_10us();
+//void Delay18ms();
+//void delay(unsigned int a);
+//void delay_ms(unsigned int t);
 //------------------------------------------------------------------------------
-sbit  dht11  = P2^1;
+sbit dht11  = P2^1;
+sbit LED = P2^2;
+//int count = 0;
 U8  U8FLAG,k;
 U8  U8comdata;
 U8  U8temp;
 U8  U8T_data_H,U8T_data_L,U8RH_data_H,U8RH_data_L,U8checkdata;
 U8  U8T_data_H_temp,U8T_data_L_temp,U8RH_data_H_temp,U8RH_data_L_temp,U8checkdata_temp;
 unsigned char temph[8]={0xee,0xcc,0x02,0x00,0x00,0x00,0x00,0xff};
+unsigned char UART_buff;  
 //**************************************************************************//
 
 //**********************************主函数**********************************//
@@ -43,6 +46,16 @@ void main()
 	}
 }
 
+void ser_int (void) interrupt 4   
+{  
+    if(RI == 1){  
+      RI = 0;
+      UART_buff = SBUF;  
+      if(UART_buff == '1')  LED = 1;  
+      if(UART_buff == '0')  LED = 0;  
+    }
+} 
+
 
 //**********************************串口初始化函数**********************************//
 void InitUART(void)//串口初始化函数
@@ -53,10 +66,11 @@ void InitUART(void)//串口初始化函数
    AUXR |= 0x04;  //独立波特率发生器时钟为Fosc,即1T
    AUXR |= 0x01;  //串口1选择独立波特率发生器为波特率发生器
    AUXR |= 0x10;  //启动独立波特率发生器
-   ES = 1;        //打开串口中断
+	 EA = 1;
    TR1 = 1;       //启动定时器
    TI = 1;        //打开定时器中断
 }
+
 //**********************************ESP8266初始化函数**********************************//
 void InitESP8266(void){
 	delay_ms(50000);
@@ -86,7 +100,10 @@ void InitESP8266(void){
 	delay_ms(15000);
 	//查看与服务器的连接状态（调试用）
 	printf("AT+CIPSTATUS\r\n");
+	delay_ms(2000);
+	
 }
+
 //**********************************ESP8266发送函数**********************************//
 void ESP8266SEND(char *a)
 {
@@ -105,13 +122,14 @@ void ESP8266SEND(char *a)
 	//重启模块，验证CIPSEND模式是否退出成功（调试用）
 	//printf("AT+RST\r\n");
 }
+
 //**********************************温湿度初始化函数**********************************//
 void COM(void)
 {
      U8 i;
      for(i=0;i<8;i++)	   
 	   {
-			 U8FLAG=2;	
+			 U8FLAG=2;
 			 while((!dht11)&&U8FLAG++);
 				 Delay_10us();
 				 Delay_10us();
@@ -144,6 +162,7 @@ void COM(void)
 //***********************************************************************************//
 	void RH(void)
 	{
+		ES = 0;
 	  //主机拉低18ms 
        dht11=0;
 	   Delay18ms();
@@ -184,52 +203,5 @@ void COM(void)
 			temph[6]=U8T_data_L_temp;
 	   }
 	   }
+		 ES = 1;        //打开串口中断，目前必须在这打开串口中断，如果再ESP8266初始化之前打开，那么AT指令发送后通过串口返回的返回值会触发中断，导致一些问题
 	}
-
-//**********************************延时函数系列**********************************//
-void delay(unsigned int a) //延时约1ms
-{
-	unsigned int i;
-	while (--a!=0)
-	for(i=600;i>0;i--);   //1T单片机i=600，若是12T单片机i=125
-}
-//------------------------------------------------------------------------------
-void Delay_10us()		//@11.0592MHz
-{
-	unsigned char i;
-
-	_nop_();
-	_nop_();
-	_nop_();
-	i = 24;
-	while (--i);
-}
-
-void Delay18ms()		//@11.0592MHz
-{
-	unsigned char i, j, k;
-
-	_nop_();
-	_nop_();
-	i = 1;
-	j = 194;
-	k = 159;
-	do
-	{
-		do
-		{
-			while (--k);
-		} while (--j);
-	} while (--i);
-}
-//------------------------------------------------------------------------------
-void delay_ms(unsigned int t)  
-{  
-    unsigned char a,b;  
-    while(t--)  
-    {  
-      for(b=102;b>0;b--)  
-      for(a=3;a>0;a--);  
-    }  
-}
-//********************************************************************************//
