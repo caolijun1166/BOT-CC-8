@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+<meta HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+<meta HTTP-EQUIV="expires" CONTENT="0">
+
+<title>Pleas Login</title>
+<!-- jQuery框架 -->
+<script src="botcc/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript"> 
+	var i = 5; 
+	function countDown(){
+		if(i==0){
+			window.location.href="login.html";
+		}
+		$("#countdown").text("您还未登录，请先登录 ！"+i+"秒后自动跳转登陆界面");
+		i=i-1;
+		setTimeout("countDown()",1000);
+	}
+</script>
+ 
+</head>
+<body onload="countDown()">
+<h2>Hello there, this is BOT-CC's hint</h2>
+<div>
+	<p id="countdown"></p>
+</div>
+</body>
+</html>

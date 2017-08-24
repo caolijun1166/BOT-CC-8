@@ -4,38 +4,66 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-control" content="no-cache">
+<meta http-equiv="Cache" content="no-cache">
+
 <title>实时温湿度数据</title>
 <link rel="stylesheet" type="text/css" href="bootstrap3/css/bootstrap.min.css">
 <!-- 自己的css -->
 <link rel="stylesheet" type="text/css" href="botcc/css/my.css">
-	<script type="text/javascript">
-		var xmlHttp;
-		function gethumitemp(){
-			//alert("1");	
-			if (window.XMLHttpRequest) {
-				xmlHttp = new XMLHttpRequest();
-			}
-			else{
-				xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-			//alert("2");
-				xmlHttp.open("GET","sensor/getSensorData",true);
-				//alert("3");
-				xmlHttp.onreadystatechange = handle;
-				//alert("4");
-				xmlHttp.send();
-		}
+<!-- jQuery框架 -->
+<script src="botcc/js/jquery-3.2.1.min.js"></script>
 
-		function handle(){
-			if(xmlHttp.readyState == 4){
-				if(xmlHttp.status == 200){
-					document.getElementById("temp").innerHTML=xmlHttp.responseText.split(";")[0]+"℃";
-					document.getElementById("humi").innerHTML=xmlHttp.responseText.split(";")[1]+"%";
-				}
+<!-- 使用jQuery异步向服务器获取传感器数据, 对比下面的原生JS版本 -->
+<script type="text/javascript">
+function gethumitemp(){
+	$.ajax({
+		url:"sensor/getSensorData",
+		type:"GET",
+		async:true,
+		success:function(result){
+			var temp = result.split(";")[0].split("\"")[1]+"℃";
+			var humi = result.split(";")[1].split("\"")[0]+"%";
+			$("#temp").text(temp);
+			$("#humi").text(humi);
+		}
+	});
+}
+</script>
+
+<!-- <script type="text/javascript">
+	var xmlHttp;
+	function gethumitemp(){
+		//alert("1");	
+		if (window.XMLHttpRequest) {
+			xmlHttp = new XMLHttpRequest();
+		}
+		else{
+			xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		//alert("2");
+			xmlHttp.open("GET","sensor/getSensorData",true);
+			//alert("3");
+			xmlHttp.onreadystatechange = handle;
+			//alert("4");
+			xmlHttp.send();
+	}
+
+	function handle(){
+		if(xmlHttp.readyState == 4){
+			if(xmlHttp.status == 200){
+				document.getElementById("temp").innerHTML=xmlHttp.responseText.split(";")[0].split("\"")[1]+"℃";
+				document.getElementById("humi").innerHTML=xmlHttp.responseText.split(";")[1].split("\"")[0]+"%";
 			}
 		}
-	</script>
+	}
+</script> -->
 </head>
+
 <body>
 	<!-- 页头 -->
     <div class="page-header">
@@ -46,7 +74,7 @@
 		<ul class="nav nav-pills">
 	        <li role="presentation"><a href="index.html">主页</a></li>
 	        <li role="presentation" class="active"><a href="humitemp.html">查看实时温湿度数据</a></li>
-	        <li role="presentation"><a href="#">查看历史温湿度数据</a></li>
+	        <li role="presentation"><a href="history.html">查看历史温湿度数据</a></li>
 	        <!-- 下拉列表 -->
 	       	<li role="presentation" class="dropdown">
 			    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -67,8 +95,9 @@
 	</ol>
 	
 	<script type="text/javascript">
-		var int=setInterval("gethumitemp()",50);
+		setInterval("gethumitemp()",1000);
 	</script>
+	
 	<div>
 		<span>当前温度：</span>
 		<span id="temp"></span><br>
